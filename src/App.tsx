@@ -1,14 +1,16 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Card from "./components/ProductCard/Card";
 import Modal from "./components/UI/Model";
 import { formInputsList, productList } from "./data";
 import Input from "./components/UI/Input";
 import { IProduct } from "./interfaces/interface";
+import { validtionForm } from "./validation/validation";
+import ErrorsMassege from "./components/UI/ErrorsMassege";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const [formInput, setFormInput] = useState<IProduct>({
+  //----------Object Handler-----------//
+  const objetContainer = {
     title: "",
     description: "",
     imageURL: "",
@@ -18,8 +20,15 @@ function App() {
       name: "",
       imageURL: "",
     },
+  };
+  const [formInput, setFormInput] = useState<IProduct>(objetContainer);
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
   });
-  console.log(formInput);
+  //----------Input Handler-----------//
 
   function closeModal() {
     setIsOpen(false);
@@ -31,14 +40,19 @@ function App() {
   const product = productList.map((pro) => <Card key={pro.id} product={pro} />);
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-
+    //----------Form Handler-----------//
     setFormInput({
       ...formInput,
       [name]: value,
     });
+
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
   };
   const formControl = formInputsList.map((input) => (
-    <div className="flex flex-col">
+    <div key={input.id} className="flex flex-col">
       <label htmlFor={input.id}>{input.label}</label>
       <Input
         type="text"
@@ -47,8 +61,37 @@ function App() {
         value={formInput[input.name]}
         onChange={onChangeHandler}
       />
+      <ErrorsMassege msg={errors[input.name]} />
     </div>
   ));
+
+  function ClearHandler() {
+    setFormInput(objetContainer);
+    closeModal();
+  }
+  const submitHandler = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
+    const { description, imageURL, price, title } = formInput;
+    const errors = validtionForm({
+      title,
+      description,
+      imageURL,
+      price,
+    });
+    console.log(errors);
+    // Log Errors Inputs ---------->
+    const hasErorrsMsg =
+      Object.values(errors).some((value) => value === "") &&
+      Object.values(errors).every((value) => value === "");
+    console.log(hasErorrsMsg);
+
+    if (!hasErorrsMsg) {
+      setErrors(errors);
+      return;
+    }
+  };
+
   return (
     <>
       <main className="container">
@@ -63,16 +106,16 @@ function App() {
           closeModal={closeModal}
           title="ADD A NEW PRODUCT"
         >
-          <form className="flex flex-col space-y-4">
+          <form className="flex flex-col space-y-4" onSubmit={submitHandler}>
             {formControl}
             <div className="flex space-x-4">
-              <button
-                onClick={closeModal}
-                className="bg-indigo-500 p-2 w-full rounded-md text-white"
-              >
+              <button className="bg-indigo-500 p-2 w-full rounded-md text-white">
                 Submit
               </button>
-              <button className="bg-gray-400 p-2 w-full rounded-lg text-white hover:bg-gray-600 transition">
+              <button
+                onClick={ClearHandler}
+                className="bg-gray-400 p-2 w-full rounded-lg text-white hover:bg-gray-600 transition"
+              >
                 Cancel
               </button>
             </div>
