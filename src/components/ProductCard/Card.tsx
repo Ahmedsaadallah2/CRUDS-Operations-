@@ -1,5 +1,6 @@
 import { IProduct } from "../../interfaces/interface";
 import Button from "../UI/Button";
+import CircleColor from "../UI/CircleColor";
 import { text } from "../utils";
 import Image from "./Image";
 
@@ -9,6 +10,10 @@ interface Iprop {
 
 export default function Card({ product }: Iprop) {
   const { category, colors, description, imageURL, price, title } = product;
+
+  const ProductColor = colors.map((color) => (
+    <CircleColor color={color} key={color} />
+  ));
   return (
     <>
       <div className="max-w-sm mx-auto md:max-w-lg border border-gray-300 p-2 rounded-lg">
@@ -20,11 +25,7 @@ export default function Card({ product }: Iprop) {
         <h3 className="mt-5 text-lg font-bold">{title}</h3>
         <p className="my-2 text-slate-500">{text(description)}</p>
 
-        <div className="flex gap-2 my-3 items-center">
-          <span className="w-6 h-6 bg-blue-600 rounded-full cursor-pointer" />
-          <span className="w-6 h-6 bg-red-600 rounded-full cursor-pointer" />
-          <span className="w-6 h-6 bg-indigo-400 rounded-full cursor-pointer" />
-        </div>
+        <div className="flex gap-2 my-3 items-center">{ProductColor}</div>
 
         <div className="flex justify-between items-center my-4">
           <span className="text-indigo-800 font-bold">${price}</span>

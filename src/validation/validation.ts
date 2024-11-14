@@ -31,9 +31,10 @@ export const validtionForm = (product: {
   if (
     !product.description.trim() ||
     product.description.length < 10 ||
-    product.description.length > 80
+    product.description.length > 250
   ) {
-    errors.description = "The description must be between 10 and 80 characters";
+    errors.description =
+      "The description must be between 10 and 250 characters";
   }
   if (!product.imageURL.trim() || !validationURL) {
     errors.imageURL = "Valid image URL is required";
@@ -42,4 +43,4 @@ export const validtionForm = (product: {
     errors.price = "Valid price is required!";
   }
   return errors;
-}
+};
