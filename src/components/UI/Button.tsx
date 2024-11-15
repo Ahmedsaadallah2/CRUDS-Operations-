@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { DOMAttributes, ReactNode } from "react";
 
-interface Button {
+interface Button extends DOMAttributes<HTMLButtonElement> {
   children: ReactNode;
   className?: string;
   width: "w-full" | "w-fit";
