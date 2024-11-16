@@ -10,6 +10,7 @@ interface Iprop {
   openEditModal: () => void;
   idx: number;
   setProductEditIdx: (value: number) => void;
+  OpenConfirmModel: () => void;
 }
 
 export default function Card({
@@ -18,6 +19,7 @@ export default function Card({
   openEditModal,
   setProductEditIdx,
   idx,
+  OpenConfirmModel,
 }: Iprop) {
   const { category, colors, description, imageURL, price, title } = product;
 
@@ -29,6 +31,11 @@ export default function Card({
     setProductEdit(product);
     openEditModal();
     setProductEditIdx(idx);
+  };
+
+  const onRemove = () => {
+    setProductEdit(product);
+    OpenConfirmModel();
   };
   return (
     <>
@@ -51,12 +58,20 @@ export default function Card({
             className={"w-9 h-9 rounded-full object-cover"}
           />
         </div>
-        <div className="flex gap-4">
-          <Button width="w-full" onClick={onEdit} className="bg-indigo-500">
-            EDIT
+        <div className="flex gap-2">
+          <Button
+            width="w-full"
+            onClick={onEdit}
+            className="bg-indigo-500 hover:bg-indigo-700"
+          >
+            Edit
           </Button>
-          <Button width="w-full" className="bg-red-700">
-            DELETE
+          <Button
+            width="w-full"
+            onClick={onRemove}
+            className="bg-red-700 hover:bg-red-800"
+          >
+            Remove
           </Button>
         </div>
       </div>

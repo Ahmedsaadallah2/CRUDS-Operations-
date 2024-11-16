@@ -15,7 +15,7 @@ export default function Button({
   return (
     <>
       <button
-        className={`${className} ${width} text-white p-2 rounded-md`}
+        className={`${className} ${width} text-white p-2 rounded-md transition`}
         {...rest}
       >
         {children}

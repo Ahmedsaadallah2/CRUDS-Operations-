@@ -9,7 +9,7 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { categories } from "../../data";
 import { ICategory } from "../../interfaces/interface";
 interface Iprop {
-  selected: ICategory;
+  selected: { name: string; imageURL: string };
   setSelected: (category: ICategory) => void;
 }
 
